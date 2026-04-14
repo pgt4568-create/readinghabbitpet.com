@@ -229,8 +229,10 @@ async function createClass(uid, name) {
   return { id: ref.id, name };
 }
 async function getClasses(uid) {
-  const snap = await col('teachers', uid, 'classes').orderBy('createdAt').get();
-  return snap.docs.map(d => ({ id: d.id, ...d.data() }));
+  const snap = await col('teachers', uid, 'classes').get();
+  return snap.docs
+    .map(d => ({ id: d.id, ...d.data() }))
+    .sort((a,b) => (a.createdAt||0) - (b.createdAt||0));
 }
 async function deleteClass(uid, classId) {
   // delete students & records subcollections first
@@ -365,151 +367,151 @@ const PET_LIBRARY = {
   dog: {
     id:'dog', label:'강아지 🐶',
     stages:[
-      {stage:1,name:'알',        emoji:'🥚', minXP:0,   maxXP:14,  color:'#FFE0B2', desc:'뭔가 깨어날 것 같아!'},
-      {stage:2,name:'치와와',    emoji:'🐶', minXP:15,  maxXP:34,  color:'#FFF9C4', desc:'작고 귀여운 치와와!'},
-      {stage:3,name:'포메라니안',emoji:'🐕', minXP:35,  maxXP:59,  color:'#FFECB3', desc:'폭신폭신 포메라니안!'},
-      {stage:4,name:'푸들',      emoji:'🐩', minXP:60,  maxXP:89,  color:'#E1F5FE', desc:'곱슬곱슬 사랑스러운 푸들!'},
-      {stage:5,name:'시바견',    emoji:'🦊', minXP:90,  maxXP:124, color:'#FFE0B2', desc:'기품 있는 시바견!'},
-      {stage:6,name:'비글',      emoji:'🐕‍🦺',minXP:125, maxXP:164, color:'#FFF3E0', desc:'활발한 비글!'},
-      {stage:7,name:'허스키',    emoji:'🐺', minXP:165, maxXP:209, color:'#E3F2FD', desc:'늠름한 허스키!'},
-      {stage:8,name:'골든리트리버',emoji:'🦁',minXP:210, maxXP:259, color:'#FFF9C4', desc:'착한 골든리트리버!'},
-      {stage:9,name:'진돗개',    emoji:'🐻', minXP:260, maxXP:319, color:'#E8F5E9', desc:'용감한 진돗개!'},
-      {stage:10,name:'초월견',   emoji:'🌟', minXP:320, maxXP:9999,color:'#F3E5FF', desc:'전설의 초월견! 최고야!'},
+      {stage:1, name:'알',          emoji:'🥚', minXP:0,   maxXP:14,  color:'#FFE0B2', desc:'뭔가 깨어날 것 같아!'},
+      {stage:2, name:'치와와',      emoji:'🐶', minXP:15,  maxXP:34,  color:'#FFF9C4', desc:'작고 귀여운 치와와!'},
+      {stage:3, name:'포메라니안',  emoji:'🐕', minXP:35,  maxXP:59,  color:'#FFECB3', desc:'폭신폭신 포메라니안!'},
+      {stage:4, name:'푸들',        emoji:'🐩', minXP:60,  maxXP:89,  color:'#E1F5FE', desc:'곱슬곱슬 사랑스러운 푸들!'},
+      {stage:5, name:'시바견',      emoji:'🐕‍🦺',minXP:90,  maxXP:124, color:'#FFE0B2', desc:'기품 있는 시바견!'},
+      {stage:6, name:'비글',        emoji:'🦮', minXP:125, maxXP:164, color:'#FFF3E0', desc:'활발한 비글!'},
+      {stage:7, name:'허스키',      emoji:'🐺', minXP:165, maxXP:209, color:'#E3F2FD', desc:'늠름한 허스키!'},
+      {stage:8, name:'골든리트리버',emoji:'🦁', minXP:210, maxXP:259, color:'#FFF9C4', desc:'착한 골든리트리버!'},
+      {stage:9, name:'진돗개',      emoji:'🐕', minXP:260, maxXP:319, color:'#E8F5E9', desc:'용감한 진돗개!'},
+      {stage:10,name:'초월견',      emoji:'🌟', minXP:320, maxXP:9999,color:'#F3E5FF', desc:'전설의 초월견! 최고야!'},
     ]
   },
   cat: {
     id:'cat', label:'고양이 🐱',
     stages:[
-      {stage:1,name:'알',        emoji:'🥚', minXP:0,   maxXP:14,  color:'#FFE0B2'},
-      {stage:2,name:'새끼냥이',  emoji:'🐱', minXP:15,  maxXP:34,  color:'#FCE4EC'},
-      {stage:3,name:'아기냥이',  emoji:'🐈', minXP:35,  maxXP:59,  color:'#F8BBD9'},
-      {stage:4,name:'먹보냥이',  emoji:'😼', minXP:60,  maxXP:89,  color:'#E1BEE7'},
-      {stage:5,name:'도둑냥이',  emoji:'🙀', minXP:90,  maxXP:124, color:'#C8E6C9'},
-      {stage:6,name:'얼룩냥이',  emoji:'🐆', minXP:125, maxXP:164, color:'#DCEDC8'},
-      {stage:7,name:'설원냥이',  emoji:'❄️',  minXP:165, maxXP:209, color:'#E3F2FD'},
-      {stage:8,name:'황금냥이',  emoji:'🌙', minXP:210, maxXP:259, color:'#FFF9C4'},
-      {stage:9,name:'용냥이',    emoji:'🐉', minXP:260, maxXP:319, color:'#E8EAF6'},
-      {stage:10,name:'초월냥이', emoji:'✨', minXP:320, maxXP:9999,color:'#F3E5FF'},
+      {stage:1, name:'알',          emoji:'🥚', minXP:0,   maxXP:14,  color:'#FFE0B2'},
+      {stage:2, name:'아기냥이',    emoji:'🐱', minXP:15,  maxXP:34,  color:'#FCE4EC'},
+      {stage:3, name:'호기심냥이',  emoji:'🐈', minXP:35,  maxXP:59,  color:'#F8BBD9'},
+      {stage:4, name:'장난꾸러기냥',emoji:'🐈‍⬛',minXP:60,  maxXP:89,  color:'#E1BEE7'},
+      {stage:5, name:'사냥꾼냥이',  emoji:'🐾', minXP:90,  maxXP:124, color:'#C8E6C9'},
+      {stage:6, name:'얼룩냥이',    emoji:'🐆', minXP:125, maxXP:164, color:'#DCEDC8'},
+      {stage:7, name:'설원냥이',    emoji:'🌨', minXP:165, maxXP:209, color:'#E3F2FD'},
+      {stage:8, name:'황금냥이',    emoji:'😸', minXP:210, maxXP:259, color:'#FFF9C4'},
+      {stage:9, name:'용냥이',      emoji:'🐉', minXP:260, maxXP:319, color:'#E8EAF6'},
+      {stage:10,name:'초월냥이',    emoji:'✨', minXP:320, maxXP:9999,color:'#F3E5FF'},
     ]
   },
   rabbit: {
     id:'rabbit', label:'토끼 🐰',
     stages:[
-      {stage:1,name:'알',      emoji:'🥚', minXP:0,   maxXP:14,  color:'#FFE0B2'},
-      {stage:2,name:'아기토끼',emoji:'🐰', minXP:15,  maxXP:34,  color:'#FCE4EC'},
-      {stage:3,name:'귀여운토끼',emoji:'🐇',minXP:35, maxXP:59,  color:'#F8BBD9'},
-      {stage:4,name:'폭신토끼',emoji:'🐾', minXP:60,  maxXP:89,  color:'#E8F5E9'},
-      {stage:5,name:'점프토끼',emoji:'🦘', minXP:90,  maxXP:124, color:'#FFF3E0'},
-      {stage:6,name:'마법토끼',emoji:'🎩', minXP:125, maxXP:164, color:'#E1F5FE'},
-      {stage:7,name:'설원토끼',emoji:'☃️', minXP:165, maxXP:209, color:'#E3F2FD'},
-      {stage:8,name:'황금토끼',emoji:'🌟', minXP:210, maxXP:259, color:'#FFF9C4'},
-      {stage:9,name:'초원토끼',emoji:'🍀', minXP:260, maxXP:319, color:'#E8F5E9'},
-      {stage:10,name:'달토끼', emoji:'🌕', minXP:320, maxXP:9999,color:'#F3E5FF'},
+      {stage:1, name:'알',          emoji:'🥚', minXP:0,   maxXP:14,  color:'#FFE0B2'},
+      {stage:2, name:'아기토끼',    emoji:'🐰', minXP:15,  maxXP:34,  color:'#FCE4EC'},
+      {stage:3, name:'깡충토끼',    emoji:'🐇', minXP:35,  maxXP:59,  color:'#F8BBD9'},
+      {stage:4, name:'폭신토끼',    emoji:'🐰', minXP:60,  maxXP:89,  color:'#E8F5E9'},
+      {stage:5, name:'점프토끼',    emoji:'🦘', minXP:90,  maxXP:124, color:'#FFF3E0'},
+      {stage:6, name:'마법토끼',    emoji:'🎩', minXP:125, maxXP:164, color:'#E1F5FE'},
+      {stage:7, name:'설원토끼',    emoji:'🐇', minXP:165, maxXP:209, color:'#E3F2FD'},
+      {stage:8, name:'황금토끼',    emoji:'🌟', minXP:210, maxXP:259, color:'#FFF9C4'},
+      {stage:9, name:'달토끼',      emoji:'🌕', minXP:260, maxXP:319, color:'#E8F5E9'},
+      {stage:10,name:'신화토끼',    emoji:'🌈', minXP:320, maxXP:9999,color:'#F3E5FF'},
     ]
   },
   bird: {
     id:'bird', label:'새 🐦',
     stages:[
-      {stage:1,name:'알',       emoji:'🥚', minXP:0,   maxXP:14,  color:'#FFE0B2'},
-      {stage:2,name:'아기새',   emoji:'🐣', minXP:15,  maxXP:34,  color:'#FFF9C4'},
-      {stage:3,name:'병아리',   emoji:'🐥', minXP:35,  maxXP:59,  color:'#FFECB3'},
-      {stage:4,name:'참새',     emoji:'🐦', minXP:60,  maxXP:89,  color:'#E3F2FD'},
-      {stage:5,name:'앵무새',   emoji:'🦜', minXP:90,  maxXP:124, color:'#C8E6C9'},
-      {stage:6,name:'올빼미',   emoji:'🦉', minXP:125, maxXP:164, color:'#E8EAF6'},
-      {stage:7,name:'독수리',   emoji:'🦅', minXP:165, maxXP:209, color:'#FFF3E0'},
-      {stage:8,name:'공작새',   emoji:'🦚', minXP:210, maxXP:259, color:'#E8F5E9'},
-      {stage:9,name:'불사조',   emoji:'🔥', minXP:260, maxXP:319, color:'#FFF3E0'},
-      {stage:10,name:'무지개새',emoji:'🌈', minXP:320, maxXP:9999,color:'#F3E5FF'},
+      {stage:1, name:'알',          emoji:'🥚', minXP:0,   maxXP:14,  color:'#FFE0B2'},
+      {stage:2, name:'아기새',      emoji:'🐣', minXP:15,  maxXP:34,  color:'#FFF9C4'},
+      {stage:3, name:'병아리',      emoji:'🐥', minXP:35,  maxXP:59,  color:'#FFECB3'},
+      {stage:4, name:'참새',        emoji:'🐦', minXP:60,  maxXP:89,  color:'#E3F2FD'},
+      {stage:5, name:'앵무새',      emoji:'🦜', minXP:90,  maxXP:124, color:'#C8E6C9'},
+      {stage:6, name:'올빼미',      emoji:'🦉', minXP:125, maxXP:164, color:'#E8EAF6'},
+      {stage:7, name:'독수리',      emoji:'🦅', minXP:165, maxXP:209, color:'#FFF3E0'},
+      {stage:8, name:'공작새',      emoji:'🦚', minXP:210, maxXP:259, color:'#E8F5E9'},
+      {stage:9, name:'불사조',      emoji:'🦩', minXP:260, maxXP:319, color:'#FFF3E0'},
+      {stage:10,name:'무지개새',    emoji:'🌈', minXP:320, maxXP:9999,color:'#F3E5FF'},
     ]
   },
   dragon: {
     id:'dragon', label:'드래곤 🐲',
     stages:[
-      {stage:1,name:'알',       emoji:'🥚', minXP:0,   maxXP:14,  color:'#FFE0B2'},
-      {stage:2,name:'드래곤 알',emoji:'🪨', minXP:15,  maxXP:34,  color:'#E8EAF6'},
-      {stage:3,name:'아기용',   emoji:'🦎', minXP:35,  maxXP:59,  color:'#C8E6C9'},
-      {stage:4,name:'꼬마용',   emoji:'🐊', minXP:60,  maxXP:89,  color:'#DCEDC8'},
-      {stage:5,name:'초록용',   emoji:'🐲', minXP:90,  maxXP:124, color:'#E8F5E9'},
-      {stage:6,name:'불용',     emoji:'🔥', minXP:125, maxXP:164, color:'#FFF3E0'},
-      {stage:7,name:'물용',     emoji:'🌊', minXP:165, maxXP:209, color:'#E3F2FD'},
-      {stage:8,name:'번개용',   emoji:'⚡', minXP:210, maxXP:259, color:'#FFF9C4'},
-      {stage:9,name:'황금용',   emoji:'🏆', minXP:260, maxXP:319, color:'#FFF3CD'},
-      {stage:10,name:'신룡',    emoji:'🌟', minXP:320, maxXP:9999,color:'#F3E5FF'},
+      {stage:1, name:'알',          emoji:'🥚', minXP:0,   maxXP:14,  color:'#FFE0B2'},
+      {stage:2, name:'드래곤 알',   emoji:'🪨', minXP:15,  maxXP:34,  color:'#E8EAF6'},
+      {stage:3, name:'아기용',      emoji:'🦎', minXP:35,  maxXP:59,  color:'#C8E6C9'},
+      {stage:4, name:'꼬마용',      emoji:'🐊', minXP:60,  maxXP:89,  color:'#DCEDC8'},
+      {stage:5, name:'초록용',      emoji:'🐲', minXP:90,  maxXP:124, color:'#E8F5E9'},
+      {stage:6, name:'불꽃용',      emoji:'🔥', minXP:125, maxXP:164, color:'#FFF3E0'},
+      {stage:7, name:'폭풍용',      emoji:'⛈', minXP:165, maxXP:209, color:'#E3F2FD'},
+      {stage:8, name:'번개용',      emoji:'⚡', minXP:210, maxXP:259, color:'#FFF9C4'},
+      {stage:9, name:'황금용',      emoji:'🏆', minXP:260, maxXP:319, color:'#FFF3CD'},
+      {stage:10,name:'신룡',        emoji:'🌟', minXP:320, maxXP:9999,color:'#F3E5FF'},
     ]
   },
   hamster: {
     id:'hamster', label:'햄스터 🐹',
     stages:[
-      {stage:1,name:'알',        emoji:'🥚', minXP:0,   maxXP:14,  color:'#FFE0B2'},
-      {stage:2,name:'아기햄스터',emoji:'🐹', minXP:15,  maxXP:34,  color:'#FCE4EC'},
-      {stage:3,name:'볼터햄스터',emoji:'🐭', minXP:35,  maxXP:59,  color:'#F8BBD9'},
-      {stage:4,name:'통통햄스터',emoji:'🐀', minXP:60,  maxXP:89,  color:'#FFF3E0'},
-      {stage:5,name:'달리기선수',emoji:'🏃', minXP:90,  maxXP:124, color:'#E8F5E9'},
-      {stage:6,name:'수집가햄',  emoji:'🎒', minXP:125, maxXP:164, color:'#E3F2FD'},
-      {stage:7,name:'닌자햄',    emoji:'🥷', minXP:165, maxXP:209, color:'#E8EAF6'},
-      {stage:8,name:'마법사햄',  emoji:'🧙', minXP:210, maxXP:259, color:'#EDE7F6'},
-      {stage:9,name:'황제햄',    emoji:'👑', minXP:260, maxXP:319, color:'#FFF9C4'},
-      {stage:10,name:'초월햄',   emoji:'✨', minXP:320, maxXP:9999,color:'#F3E5FF'},
+      {stage:1, name:'알',          emoji:'🥚', minXP:0,   maxXP:14,  color:'#FFE0B2'},
+      {stage:2, name:'아기햄스터',  emoji:'🐹', minXP:15,  maxXP:34,  color:'#FCE4EC'},
+      {stage:3, name:'통통햄스터',  emoji:'🐭', minXP:35,  maxXP:59,  color:'#F8BBD9'},
+      {stage:4, name:'볼볼햄스터',  emoji:'🐹', minXP:60,  maxXP:89,  color:'#FFF3E0'},
+      {stage:5, name:'달리기선수',  emoji:'🏃', minXP:90,  maxXP:124, color:'#E8F5E9'},
+      {stage:6, name:'수집가햄',    emoji:'🐿', minXP:125, maxXP:164, color:'#E3F2FD'},
+      {stage:7, name:'닌자햄',      emoji:'🥷', minXP:165, maxXP:209, color:'#E8EAF6'},
+      {stage:8, name:'마법사햄',    emoji:'🧙', minXP:210, maxXP:259, color:'#EDE7F6'},
+      {stage:9, name:'황제햄',      emoji:'👑', minXP:260, maxXP:319, color:'#FFF9C4'},
+      {stage:10,name:'초월햄',      emoji:'✨', minXP:320, maxXP:9999,color:'#F3E5FF'},
     ]
   },
   penguin: {
     id:'penguin', label:'펭귄 🐧',
     stages:[
-      {stage:1,name:'알',      emoji:'🥚', minXP:0,   maxXP:14,  color:'#FFE0B2'},
-      {stage:2,name:'아기펭귄',emoji:'🐧', minXP:15,  maxXP:34,  color:'#E3F2FD'},
-      {stage:3,name:'꼬마펭귄',emoji:'❄️', minXP:35,  maxXP:59,  color:'#BBDEFB'},
-      {stage:4,name:'수영펭귄',emoji:'🏊', minXP:60,  maxXP:89,  color:'#B3E5FC'},
-      {stage:5,name:'춤추는펭귄',emoji:'🕺',minXP:90, maxXP:124, color:'#E8EAF6'},
-      {stage:6,name:'신사펭귄',emoji:'🎩', minXP:125, maxXP:164, color:'#E1F5FE'},
-      {stage:7,name:'탐험펭귄',emoji:'🧭', minXP:165, maxXP:209, color:'#E0F7FA'},
-      {stage:8,name:'마법펭귄',emoji:'🪄', minXP:210, maxXP:259, color:'#EDE7F6'},
-      {stage:9,name:'왕펭귄',  emoji:'👑', minXP:260, maxXP:319, color:'#FFF9C4'},
-      {stage:10,name:'전설펭귄',emoji:'🌟',minXP:320, maxXP:9999,color:'#F3E5FF'},
+      {stage:1, name:'알',          emoji:'🥚', minXP:0,   maxXP:14,  color:'#FFE0B2'},
+      {stage:2, name:'아기펭귄',    emoji:'🐧', minXP:15,  maxXP:34,  color:'#E3F2FD'},
+      {stage:3, name:'꼬마펭귄',    emoji:'🐧', minXP:35,  maxXP:59,  color:'#BBDEFB'},
+      {stage:4, name:'수영펭귄',    emoji:'🏊', minXP:60,  maxXP:89,  color:'#B3E5FC'},
+      {stage:5, name:'춤추는펭귄',  emoji:'🕺', minXP:90,  maxXP:124, color:'#E8EAF6'},
+      {stage:6, name:'신사펭귄',    emoji:'🐧', minXP:125, maxXP:164, color:'#E1F5FE'},
+      {stage:7, name:'탐험펭귄',    emoji:'🧭', minXP:165, maxXP:209, color:'#E0F7FA'},
+      {stage:8, name:'마법펭귄',    emoji:'🪄', minXP:210, maxXP:259, color:'#EDE7F6'},
+      {stage:9, name:'왕펭귄',      emoji:'👑', minXP:260, maxXP:319, color:'#FFF9C4'},
+      {stage:10,name:'전설펭귄',    emoji:'🌟', minXP:320, maxXP:9999,color:'#F3E5FF'},
     ]
   },
   fox: {
     id:'fox', label:'여우 🦊',
     stages:[
-      {stage:1,name:'알',     emoji:'🥚', minXP:0,   maxXP:14,  color:'#FFE0B2'},
-      {stage:2,name:'아기여우',emoji:'🦊',minXP:15,  maxXP:34,  color:'#FFF3E0'},
-      {stage:3,name:'꼬마여우',emoji:'🐾',minXP:35,  maxXP:59,  color:'#FFE0B2'},
-      {stage:4,name:'도둑여우',emoji:'🎭',minXP:60,  maxXP:89,  color:'#FFF9C4'},
-      {stage:5,name:'마법여우',emoji:'🔮',minXP:90,  maxXP:124, color:'#EDE7F6'},
-      {stage:6,name:'불꽃여우',emoji:'🔥',minXP:125, maxXP:164, color:'#FFF3E0'},
-      {stage:7,name:'구미호',  emoji:'🌙',minXP:165, maxXP:209, color:'#F3E5FF'},
-      {stage:8,name:'은여우',  emoji:'⚡',minXP:210, maxXP:259, color:'#E8EAF6'},
-      {stage:9,name:'황금여우',emoji:'🌟',minXP:260, maxXP:319, color:'#FFF9C4'},
-      {stage:10,name:'초월여우',emoji:'🌈',minXP:320,maxXP:9999,color:'#F3E5FF'},
+      {stage:1, name:'알',          emoji:'🥚', minXP:0,   maxXP:14,  color:'#FFE0B2'},
+      {stage:2, name:'아기여우',    emoji:'🦊', minXP:15,  maxXP:34,  color:'#FFF3E0'},
+      {stage:3, name:'꼬마여우',    emoji:'🦊', minXP:35,  maxXP:59,  color:'#FFE0B2'},
+      {stage:4, name:'장난꾸러기여우',emoji:'🦊',minXP:60, maxXP:89,  color:'#FFF9C4'},
+      {stage:5, name:'마법여우',    emoji:'🔮', minXP:90,  maxXP:124, color:'#EDE7F6'},
+      {stage:6, name:'불꽃여우',    emoji:'🔥', minXP:125, maxXP:164, color:'#FFF3E0'},
+      {stage:7, name:'구미호',      emoji:'🌙', minXP:165, maxXP:209, color:'#F3E5FF'},
+      {stage:8, name:'은여우',      emoji:'⭐', minXP:210, maxXP:259, color:'#E8EAF6'},
+      {stage:9, name:'황금여우',    emoji:'🌟', minXP:260, maxXP:319, color:'#FFF9C4'},
+      {stage:10,name:'신화여우',    emoji:'🌈', minXP:320, maxXP:9999,color:'#F3E5FF'},
     ]
   },
   unicorn: {
     id:'unicorn', label:'유니콘 🦄',
     stages:[
-      {stage:1,name:'알',       emoji:'🥚', minXP:0,   maxXP:14,  color:'#FFE0B2'},
-      {stage:2,name:'망아지',   emoji:'🐴', minXP:15,  maxXP:34,  color:'#FCE4EC'},
-      {stage:3,name:'새끼유니콘',emoji:'🌸',minXP:35,  maxXP:59,  color:'#F8BBD9'},
-      {stage:4,name:'유니콘',   emoji:'🦄', minXP:60,  maxXP:89,  color:'#EDE7F6'},
-      {stage:5,name:'무지개유니콘',emoji:'🌈',minXP:90,maxXP:124, color:'#E8EAF6'},
-      {stage:6,name:'별빛유니콘',emoji:'⭐',minXP:125, maxXP:164, color:'#FFF9C4'},
-      {stage:7,name:'달빛유니콘',emoji:'🌙',minXP:165, maxXP:209, color:'#E3F2FD'},
-      {stage:8,name:'황금유니콘',emoji:'🏆',minXP:210, maxXP:259, color:'#FFF3CD'},
-      {stage:9,name:'천상유니콘',emoji:'☁️', minXP:260, maxXP:319, color:'#E1F5FE'},
-      {stage:10,name:'신화유니콘',emoji:'🌟',minXP:320,maxXP:9999,color:'#F3E5FF'},
+      {stage:1, name:'알',          emoji:'🥚', minXP:0,   maxXP:14,  color:'#FFE0B2'},
+      {stage:2, name:'아기말',      emoji:'🐴', minXP:15,  maxXP:34,  color:'#FCE4EC'},
+      {stage:3, name:'새끼유니콘',  emoji:'🦄', minXP:35,  maxXP:59,  color:'#F8BBD9'},
+      {stage:4, name:'유니콘',      emoji:'🦄', minXP:60,  maxXP:89,  color:'#EDE7F6'},
+      {stage:5, name:'무지개유니콘',emoji:'🌈', minXP:90,  maxXP:124, color:'#E8EAF6'},
+      {stage:6, name:'별빛유니콘',  emoji:'⭐', minXP:125, maxXP:164, color:'#FFF9C4'},
+      {stage:7, name:'달빛유니콘',  emoji:'🌙', minXP:165, maxXP:209, color:'#E3F2FD'},
+      {stage:8, name:'황금유니콘',  emoji:'🏆', minXP:210, maxXP:259, color:'#FFF3CD'},
+      {stage:9, name:'천상유니콘',  emoji:'☁️', minXP:260, maxXP:319, color:'#E1F5FE'},
+      {stage:10,name:'신화유니콘',  emoji:'🌟', minXP:320, maxXP:9999,color:'#F3E5FF'},
     ]
   },
   bear: {
     id:'bear', label:'곰 🐻',
     stages:[
-      {stage:1,name:'알',       emoji:'🥚', minXP:0,   maxXP:14,  color:'#FFE0B2'},
-      {stage:2,name:'아기곰',   emoji:'🐻', minXP:15,  maxXP:34,  color:'#FFF3E0'},
-      {stage:3,name:'꿀먹는곰', emoji:'🍯', minXP:35,  maxXP:59,  color:'#FFF9C4'},
-      {stage:4,name:'판다곰',   emoji:'🐼', minXP:60,  maxXP:89,  color:'#E8F5E9'},
-      {stage:5,name:'북극곰',   emoji:'🏔', minXP:90,  maxXP:124, color:'#E3F2FD'},
-      {stage:6,name:'체육곰',   emoji:'🏋', minXP:125, maxXP:164, color:'#E8EAF6'},
-      {stage:7,name:'마법곰',   emoji:'🔮', minXP:165, maxXP:209, color:'#EDE7F6'},
-      {stage:8,name:'왕곰',     emoji:'👑', minXP:210, maxXP:259, color:'#FFF9C4'},
-      {stage:9,name:'황금곰',   emoji:'🌟', minXP:260, maxXP:319, color:'#FFF3CD'},
-      {stage:10,name:'신수곰',  emoji:'🌈', minXP:320, maxXP:9999,color:'#F3E5FF'},
+      {stage:1, name:'알',          emoji:'🥚', minXP:0,   maxXP:14,  color:'#FFE0B2'},
+      {stage:2, name:'아기곰',      emoji:'🐻', minXP:15,  maxXP:34,  color:'#FFF3E0'},
+      {stage:3, name:'꿀먹는곰',    emoji:'🍯', minXP:35,  maxXP:59,  color:'#FFF9C4'},
+      {stage:4, name:'판다',        emoji:'🐼', minXP:60,  maxXP:89,  color:'#E8F5E9'},
+      {stage:5, name:'북극곰',      emoji:'🐻‍❄️',minXP:90,  maxXP:124, color:'#E3F2FD'},
+      {stage:6, name:'힘센곰',      emoji:'🐻', minXP:125, maxXP:164, color:'#E8EAF6'},
+      {stage:7, name:'마법곰',      emoji:'🧸', minXP:165, maxXP:209, color:'#EDE7F6'},
+      {stage:8, name:'왕곰',        emoji:'👑', minXP:210, maxXP:259, color:'#FFF9C4'},
+      {stage:9, name:'황금곰',      emoji:'🌟', minXP:260, maxXP:319, color:'#FFF3CD'},
+      {stage:10,name:'신수곰',      emoji:'🌈', minXP:320, maxXP:9999,color:'#F3E5FF'},
     ]
   },
 };
@@ -1578,32 +1580,49 @@ function DonutChart({ data }) {
 
 /* PIN Input */
 function PinInput({ value, onChange }) {
-  const refs = [useRef(), useRef(), useRef(), useRef()];
-  const digits = (value||'').split('').concat(['','','','']).slice(0,4);
-  const handleKey = (i, e) => {
-    if(e.key >= '0' && e.key <= '9') {
-      const arr = digits.slice();
-      arr[i] = e.key;
-      onChange(arr.join(''));
-      if(i < 3) refs[i+1].current?.focus();
-      e.preventDefault();
-    } else if(e.key === 'Backspace') {
-      const arr = digits.slice();
-      if(arr[i]) { arr[i]=''; onChange(arr.join('')); }
-      else if(i > 0) { arr[i-1]=''; onChange(arr.join('')); refs[i-1].current?.focus(); }
-      e.preventDefault();
-    }
+  const inputRef = useRef();
+  const digits = (value||'').replace(/\D/g,'').slice(0,4).split('').concat(['','','','']).slice(0,4);
+
+  const handleChange = (e) => {
+    const v = e.target.value.replace(/\D/g,'').slice(0,4);
+    onChange(v);
   };
+
+  const handleKeyDown = (e) => {
+    if(e.key==='Backspace' && !value) e.preventDefault();
+  };
+
   return (
-    <div className="pin-row">
+    <div style={{position:'relative', display:'flex', justifyContent:'center', gap:10, margin:'12px 0'}}
+      onClick={()=>inputRef.current?.focus()}>
+      {/* 실제 입력은 숨겨진 input이 담당 — 모바일 키패드 트리거 */}
+      <input
+        ref={inputRef}
+        type="tel"
+        inputMode="numeric"
+        pattern="[0-9]*"
+        maxLength={4}
+        value={value||''}
+        onChange={handleChange}
+        onKeyDown={handleKeyDown}
+        autoComplete="one-time-code"
+        style={{
+          position:'absolute', opacity:0, width:'100%', height:'100%',
+          top:0, left:0, cursor:'pointer', fontSize:16,
+        }}
+      />
+      {/* 시각적 표시 — 클릭하면 위 숨겨진 input이 포커스됨 */}
       {digits.map((d,i)=>(
-        <input key={i} ref={refs[i]} className="pin-digit" type="password" maxLength={1}
-          value={d} readOnly
-          onFocus={()=>{}}
-          onKeyDown={e=>handleKey(i,e)}
-          onClick={()=>refs[i].current?.focus()}
-          inputMode="numeric"
-        />
+        <div key={i} style={{
+          width:52, height:58, border:`2.5px solid ${(value||'').length===i?'#FF8E53':'#ddd'}`,
+          borderRadius:13, fontSize:24, fontWeight:800, textAlign:'center',
+          background:(value||'').length===i?'#fff':'#FAFAFA',
+          display:'flex', alignItems:'center', justifyContent:'center',
+          transition:'border-color .2s', userSelect:'none',
+          boxShadow:(value||'').length===i?'0 0 0 3px rgba(255,142,83,.2)':'none',
+        }}>
+          {d ? '●' : ''}
+        </div>
       ))}
     </div>
   );
