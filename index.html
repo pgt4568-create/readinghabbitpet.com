@@ -156,10 +156,9 @@ textarea.input-field{resize:vertical;min-height:78px}
        match /teachers/{uid}/{document=**} {
          allow read, write: if request.auth != null && request.auth.uid == uid;
        }
-       // 학생 목록: 누구나 읽기 (학생 로그인용)
+       // 학생 목록: 누구나 읽기, 쓰기도 허용 (학생 XP/코인 업데이트용)
        match /teachers/{uid}/classes/{classId}/students/{studentId} {
-         allow read: if true;
-         allow write: if request.auth != null && request.auth.uid == uid;
+         allow read, write: if true;
        }
        // 기록: 누구나 읽기/쓰기 (학생 기록 저장용)
        match /teachers/{uid}/classes/{classId}/records/{recordId} {
@@ -272,8 +271,10 @@ async function deleteStudent(uid, classId, studentId) {
 
 /* ── Records CRUD ── */
 async function getRecords(uid, classId) {
-  const snap = await col('teachers', uid, 'classes', classId, 'records').orderBy('date','desc').get();
-  return snap.docs.map(d => ({ id: d.id, ...d.data() }));
+  const snap = await col('teachers', uid, 'classes', classId, 'records').get();
+  return snap.docs
+    .map(d => ({ id: d.id, ...d.data() }))
+    .sort((a,b) => (b.date||'').localeCompare(a.date||''));
 }
 async function addRecord(uid, classId, data) {
   const ref = await col('teachers', uid, 'classes', classId, 'records').add(data);
@@ -4238,10 +4239,15 @@ function App() {
     try {
       let newRec;
       if(FB_READY && activeClass && activeClass.uid && activeClass.id) {
-        [newRec] = await Promise.all([
-          addRecord(activeClass.uid, activeClass.id, recData),
-          updateStudent(activeClass.uid, activeClass.id, user.id, stuUpdates),
-        ]);
+        console.log('📝 저장 시도:', {uid: activeClass.uid, classId: activeClass.id, sid: user.id});
+        // 기록 저장 (누구나 쓰기 가능)
+        newRec = await addRecord(activeClass.uid, activeClass.id, recData);
+        // 학생 정보 업데이트 (실패해도 기록은 저장됨)
+        try {
+          await updateStudent(activeClass.uid, activeClass.id, user.id, stuUpdates);
+        } catch(ue) {
+          console.warn('학생 XP/코인 업데이트 실패 (권한 부족) - 로컬만 업데이트:', ue.message);
+        }
       } else {
         newRec = { id: Date.now().toString(), ...recData };
       }
