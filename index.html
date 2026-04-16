@@ -1739,7 +1739,7 @@ function PinInput({ value, onChange }) {
 function StudentStartScreen({ onStart, onGoTeacher }) {
   return (
     <div style={{background:'#FEF5ED',minHeight:'100vh',display:'flex',flexDirection:'column',alignItems:'center',justifyContent:'center',padding:'36px 20px'}}>
-      <div className="float-anim" style={{fontSize:90,marginBottom:8}}>📚</div>
+      <div style={{fontSize:80,marginBottom:16,lineHeight:1}}>🌿</div>
       <h1 style={{fontSize:42,fontWeight:900,color:'#2d3a2d',textAlign:'center',lineHeight:1.1,fontFamily:"'Nanum Myeongjo',serif",letterSpacing:-1}}>북돋움</h1>
       <p style={{color:'#2d3a2d',marginTop:6,fontSize:14,textAlign:'center',fontWeight:800,letterSpacing:1}}>Book + 돋우다</p>
       <p style={{color:'#aaa',marginTop:6,fontSize:12,textAlign:'center',fontWeight:600}}>책 읽고 펫 키우며 습관을 북돋워요 🌱</p>
@@ -4952,8 +4952,11 @@ function App() {
         if(studentId && ci && ci.uid && ci.id) {
           setActiveClass(ci);
           dataLoadedRef.current = true;
-          Promise.all([getStudents(ci.uid, ci.id), getRecords(ci.uid, ci.id), getMission(ci.uid, ci.id)])
-            .then(([sts, rcs, mission]) => {
+          Promise.all([
+            getStudents(ci.uid, ci.id),
+            getRecords(ci.uid, ci.id),
+            getMission(ci.uid, ci.id).catch(() => null), // 권한 오류여도 무시
+          ]).then(([sts, rcs, mission]) => {
               setStudents(sts);
               setRecords(rcs);
               if(mission) setClassMission(mission);
@@ -5009,7 +5012,7 @@ function App() {
     Promise.all([
       getStudents(activeClass.uid, activeClass.id),
       getRecords(activeClass.uid, activeClass.id),
-      getMission(activeClass.uid, activeClass.id),
+      getMission(activeClass.uid, activeClass.id).catch(() => null), // 권한 오류여도 무시
     ]).then(([sts, rcs, mission]) => {
       setStudents(sts);
       if(rcs.length > 0 || records.length === 0) {
