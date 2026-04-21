@@ -3029,7 +3029,7 @@ function TeacherLogin({ onLogin, onBack }) {
         <label style={{fontWeight:800,fontSize:14,color:'#555',display:'block',marginBottom:7}}>비밀번호</label>
         <input className="input-field" type="password" placeholder="teacher123 또는 1234 (데모)" value={pw} onChange={e=>setPw(e.target.value)} onKeyDown={e=>e.key==='Enter'&&tryLogin()}/>
         {err && <div style={{color:'#2d3a2d',fontSize:12,fontWeight:700,marginTop:5}}>⚠️ 비밀번호가 틀렸어요!</div>}
-        <button className="btn btn-purple" style={{width:'100%',marginTop:14}} onClick={tryLogin}>🔓 로그인</button>
+        <button className="btn btn-purple" style={{width:'100%',marginTop:14,fontSize:13,padding:'14px 20px',whiteSpace:'nowrap'}}  onClick={tryLogin}>🔓 로그인</button>
         <div style={{textAlign:'center',fontSize:11,color:'#aaa',marginTop:9}}>데모 비밀번호: teacher123 또는 1234</div>
       </div>
     </div>
