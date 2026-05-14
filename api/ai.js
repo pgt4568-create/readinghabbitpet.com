@@ -21,7 +21,13 @@ export default async function handler(req, res) {
       },
       body: JSON.stringify({
         model: 'llama-3.3-70b-versatile',
-        messages,
+        messages: [
+          {
+            role: 'system',
+            content: '당신은 한국어로만 답변하는 AI입니다. 영어, 한자, 일본어 등 다른 언어를 절대 사용하지 마세요. 모든 응답은 반드시 한국어로만 작성하세요.'
+          },
+          ...messages
+        ],
         max_tokens: Math.min(max_tokens || 2000, 8192),
         temperature: 0.7,
       }),
